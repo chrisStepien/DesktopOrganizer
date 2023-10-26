@@ -5,7 +5,7 @@ import os
 import shutil
 from pathlib import Path
 
-# desktop path
+# required paths
 origin_path = Path('C:/Users/chris/OneDrive/Desktop')
 destination_path = Path('C:/Users/chris/OneDrive/Desktop')
 
@@ -13,7 +13,7 @@ def main():
     
    unsorted_files = getting_files(origin_path)
    create_folders(destination_path, unsorted_files)
-   setting_files(unsorted_files)
+   setting_files(unsorted_files, destination_path)
 
 # returns a list of all files in the given directory path         
 def getting_files(directory: Path):     
@@ -54,8 +54,17 @@ def create_folders(path, file_list):
             print("Folder was created")        
 
 # import files into folders
-def setting_files(unsorted_files):
-    print(unsorted_files)
+def setting_files(unsorted_files, path):
+    
+    for file in unsorted_files:
+        
+        # folder name for destination of current file
+        folder_destination = os.path.splitext(file)[-1].replace('.','').upper() + " Files"
+        # desktop path plus folder destination to get full path
+        destination_path = path / folder_destination
+        
+        # moves files into correct folders
+        shutil.move(file, destination_path)    
     
 
 if __name__ == "__main__":
